@@ -1,0 +1,13 @@
+{
+  "name": "site-lyon-tech",
+  "version": "1.0.0",
+  "description": "Site web de l'association Lyon Tech",
+  "scripts": {
+    "build:css": "sass style/main.scss main.css",
+    "watch:css": "sass --watch style/main.scss:main.css"
+  },
+  "devDependencies": {
+    "sass": "^1.70.0"
+  }
+}
+

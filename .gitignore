@@ -1,0 +1,11 @@
+# Dependencies
+node_modules/
+
+# Build outputs (optionnel - tu peux garder main.css dans git si tu veux)
+# main.css
+# main.css.map
+
+# OS files
+.DS_Store
+Thumbs.db
+

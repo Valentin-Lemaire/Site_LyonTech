@@ -1,0 +1,13 @@
+@import '../abstracts/variables';
+@import '../abstracts/mixins';
+
+// ===== Projects Section =====
+.projects-section {
+    background-color: $bg-light;
+}
+
+.projects-grid {
+    @include grid-auto-fill(320px);
+    margin-top: $spacing-lg;
+}
+

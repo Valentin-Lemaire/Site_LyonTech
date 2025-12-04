@@ -1,0 +1,62 @@
+@import '../abstracts/variables';
+
+// ===== Typography & Base Styles =====
+body {
+    font-family: $font-family-base;
+    line-height: $line-height-base;
+    color: $text-dark;
+    background-color: $bg-light;
+}
+
+// ===== Headings =====
+h1, h2, h3, h4, h5, h6 {
+    font-family: $font-family-heading;
+    font-weight: $font-weight-bold;
+    color: $text-dark;
+}
+
+.container {
+    max-width: $container-max-width;
+    margin: 0 auto;
+    padding: 0 $container-padding;
+}
+
+// ===== Sections =====
+section {
+    padding: $spacing-2xl 0;
+}
+
+.section-title {
+    font-family: $font-family-heading;
+    font-size: $font-size-4xl;
+    font-weight: $font-weight-bold;
+    margin-bottom: $spacing-lg;
+    text-align: center;
+    color: $text-dark;
+}
+
+.page-header {
+    background-color: $bg-section;
+    padding: $spacing-xl 0;
+    text-align: center;
+}
+
+.page-title {
+    font-family: $font-family-heading;
+    font-size: $font-size-5xl;
+    font-weight: $font-weight-extrabold;
+    margin-bottom: $spacing-sm;
+    color: $text-dark;
+}
+
+.page-intro {
+    font-size: $font-size-xl;
+    color: $text-light;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.main-content {
+    min-height: calc(100vh - 200px);
+}
+

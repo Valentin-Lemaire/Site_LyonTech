@@ -1,0 +1,58 @@
+@import '../abstracts/variables';
+@import '../abstracts/mixins';
+
+// ===== Contact Section =====
+.contact-section {
+    background-color: $bg-light;
+}
+
+.contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: $spacing-xl;
+    margin-top: $spacing-lg;
+}
+
+.contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-lg;
+}
+
+.contact-details {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+}
+
+.contact-item {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-xs;
+}
+
+.contact-label {
+    font-size: $font-size-sm;
+    font-weight: $font-weight-semibold;
+    color: $text-light;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.contact-value {
+    font-size: $font-size-lg;
+    color: $text-dark;
+    text-decoration: none;
+    @include transition(color);
+
+    &:hover {
+        color: $primary-color;
+    }
+}
+
+.social-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: $spacing-sm;
+}
+

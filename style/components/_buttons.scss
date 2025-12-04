@@ -1,0 +1,39 @@
+@import '../abstracts/variables';
+@import '../abstracts/mixins';
+
+// ===== Buttons =====
+.btn {
+    display: inline-block;
+    padding: 0.75rem 2rem;
+    border-radius: $border-radius-md;
+    text-decoration: none;
+    font-weight: $font-weight-semibold;
+    @include transition(all);
+    border: none;
+    cursor: pointer;
+    font-size: $font-size-base;
+}
+
+.btn-primary {
+    background-color: $primary-color;
+    color: white;
+
+    &:hover {
+        background-color: $primary-hover;
+        transform: translateY(-2px);
+        box-shadow: $shadow-md;
+    }
+}
+
+.btn-secondary {
+    background-color: white;
+    color: $primary-color;
+    border: 2px solid white;
+
+    &:hover {
+        background-color: rgba(255, 255, 255, 0.9);
+        transform: translateY(-2px);
+        box-shadow: $shadow-md;
+    }
+}
+

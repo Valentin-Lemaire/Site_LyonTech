@@ -1,0 +1,17 @@
+@import '../abstracts/variables';
+
+// ===== Team Section =====
+.team-section {
+    background-color: $bg-light;
+    margin-bottom: $spacing-lg;
+
+    &:last-of-type {
+        margin-bottom: 0;
+    }
+}
+
+.team-grid {
+    @include grid-auto-fill(250px);
+    margin-top: $spacing-lg;
+}
+

@@ -1,0 +1,143 @@
+@import '../abstracts/variables';
+@import '../abstracts/mixins';
+
+// ===== Responsive Design =====
+@include respond-to(md) {
+    .logo-image {
+        height: 32px;
+        width: 32px;
+    }
+
+    .logo-text {
+        font-size: $font-size-xl;
+    }
+
+    .nav-toggle {
+        display: flex;
+    }
+
+    .nav-menu {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background-color: $bg-light;
+        flex-direction: column;
+        width: 100%;
+        max-width: 300px;
+        box-shadow: $shadow-lg;
+        border-radius: $border-radius-md;
+        padding: $spacing-sm;
+        gap: $spacing-xs;
+        transform: translateX(100%);
+        opacity: 0;
+        visibility: hidden;
+        @include transition(all);
+        margin-top: $spacing-sm;
+
+        &.active {
+            transform: translateX(0);
+            opacity: 1;
+            visibility: visible;
+        }
+    }
+
+    .nav-link.active::after {
+        display: none;
+    }
+
+    .nav-link.active {
+        background-color: $bg-section;
+        padding: $spacing-xs $spacing-sm;
+        border-radius: $border-radius-sm;
+    }
+
+    .hero-title {
+        font-size: $font-size-4xl;
+    }
+
+    .hero-subtitle {
+        font-size: $font-size-xl;
+    }
+
+    .section-title {
+        font-size: $font-size-3xl;
+    }
+
+    .page-title {
+        font-size: $font-size-3xl;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .projects-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .team-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+
+    .benefits-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .process-step {
+        flex-direction: column;
+        gap: $spacing-sm;
+    }
+
+    .contact-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .footer-content {
+        grid-template-columns: 1fr;
+    }
+
+    .social-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@include respond-to(sm) {
+    .logo-image {
+        height: 28px;
+        width: 28px;
+    }
+
+    .logo-text {
+        font-size: $font-size-lg;
+    }
+
+    .hero {
+        padding: $spacing-xl 0;
+    }
+
+    .hero-title {
+        font-size: $font-size-3xl;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+    }
+
+    .btn {
+        width: 100%;
+        text-align: center;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .cta-box {
+        padding: $spacing-lg $spacing-md;
+    }
+
+    .cta-buttons {
+        flex-direction: column;
+    }
+}
+

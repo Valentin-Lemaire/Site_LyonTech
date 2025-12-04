@@ -1,0 +1,31 @@
+// ===== Main SCSS File =====
+// This file imports all partials in the correct order
+
+// 1. Abstracts (variables, mixins, functions)
+@import 'abstracts/variables';
+@import 'abstracts/mixins';
+@import 'abstracts/functions';
+
+// 2. Base (reset, typography)
+@import 'base/reset';
+@import 'base/typography';
+
+// 3. Components (buttons, cards, forms)
+@import 'components/buttons';
+@import 'components/cards';
+@import 'components/forms';
+
+// 4. Layout (header, footer)
+@import 'layout/header';
+@import 'layout/footer';
+
+// 5. Pages (home, projects, team, join, contact)
+@import 'pages/home';
+@import 'pages/projects';
+@import 'pages/team';
+@import 'pages/join';
+@import 'pages/contact';
+
+// 6. Utilities (responsive)
+@import 'utilities/responsive';
+

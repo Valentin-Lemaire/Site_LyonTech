@@ -1,0 +1,73 @@
+@import '../abstracts/variables';
+@import '../abstracts/mixins';
+
+// ===== Hero Section =====
+.hero {
+    background: linear-gradient(135deg, $primary-color 0%, $secondary-color 100%);
+    color: white;
+    padding: 5rem 0;
+    text-align: center;
+}
+
+.hero-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.hero-title {
+    font-family: $font-family-heading;
+    font-size: $font-size-6xl;
+    font-weight: $font-weight-extrabold;
+    margin-bottom: $spacing-sm;
+    color: white;
+}
+
+.hero-subtitle {
+    font-family: $font-family-heading;
+    font-size: $font-size-2xl;
+    margin-bottom: $spacing-sm;
+    opacity: 0.95;
+    color: white;
+}
+
+.hero-description {
+    font-size: $font-size-lg;
+    margin-bottom: $spacing-lg;
+    opacity: 0.9;
+    color: white;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: $spacing-sm;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+// ===== About Section =====
+.about {
+    background-color: $bg-light;
+}
+
+.about-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.about-text {
+    font-size: $font-size-lg;
+    margin-bottom: $spacing-md;
+    color: $text-light;
+    line-height: 1.8;
+}
+
+// ===== Stats Section =====
+.stats {
+    background-color: $bg-section;
+}
+
+.stats-grid {
+    @include grid-auto-fit(200px);
+    margin-top: $spacing-lg;
+}
+

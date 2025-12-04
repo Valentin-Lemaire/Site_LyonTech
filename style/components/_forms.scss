@@ -1,0 +1,56 @@
+@import '../abstracts/variables';
+@import '../abstracts/mixins';
+
+// ===== Contact Form =====
+.contact-form-container {
+    background-color: $bg-light;
+    padding: $spacing-lg;
+    border-radius: $border-radius-lg;
+    box-shadow: $shadow-md;
+}
+
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-xs;
+}
+
+.form-label {
+    font-weight: $font-weight-semibold;
+    color: $text-dark;
+    font-size: $font-size-sm;
+}
+
+.form-input,
+.form-textarea {
+    padding: 0.75rem;
+    border: 1px solid $border-color;
+    border-radius: $border-radius-md;
+    font-size: $font-size-base;
+    font-family: inherit;
+    @include transition(border-color);
+    @include transition(box-shadow);
+
+    &:focus {
+        @include focus-ring;
+    }
+}
+
+.form-textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.form-note {
+    font-size: $font-size-sm;
+    color: $text-light;
+    font-style: italic;
+    margin-top: -$spacing-xs;
+}
+

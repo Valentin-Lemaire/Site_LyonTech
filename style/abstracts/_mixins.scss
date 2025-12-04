@@ -1,0 +1,81 @@
+// ===== Transitions =====
+@mixin transition($property: all, $duration: 0.3s, $easing: ease) {
+    transition: $property $duration $easing;
+}
+
+// ===== Hover Effects =====
+@mixin hover-lift {
+    transition: transform $transition-base, box-shadow $transition-base;
+    
+    &:hover {
+        transform: translateY(-5px);
+        box-shadow: $shadow-lg;
+    }
+}
+
+@mixin hover-lift-sm {
+    transition: transform $transition-base, box-shadow $transition-base;
+    
+    &:hover {
+        transform: translateY(-3px);
+        box-shadow: $shadow-md;
+    }
+}
+
+// ===== Focus States =====
+@mixin focus-ring($color: $primary-color) {
+    outline: none;
+    border-color: $color;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+// ===== Media Queries =====
+@mixin respond-to($breakpoint) {
+    @if $breakpoint == sm {
+        @media (max-width: $breakpoint-sm) {
+            @content;
+        }
+    } @else if $breakpoint == md {
+        @media (max-width: $breakpoint-md) {
+            @content;
+        }
+    } @else if $breakpoint == lg {
+        @media (max-width: $breakpoint-lg) {
+            @content;
+        }
+    } @else if $breakpoint == xl {
+        @media (max-width: $breakpoint-xl) {
+            @content;
+        }
+    }
+}
+
+// ===== Card Styles =====
+@mixin card-base {
+    background-color: $bg-light;
+    border: 1px solid $border-color;
+    border-radius: $border-radius-lg;
+    box-shadow: $shadow;
+    transition: transform $transition-base, box-shadow $transition-base;
+}
+
+@mixin card-hover {
+    &:hover {
+        transform: translateY(-5px);
+        box-shadow: $shadow-lg;
+    }
+}
+
+// ===== Grid Layouts =====
+@mixin grid-auto-fit($min-width: 250px) {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax($min-width, 1fr));
+    gap: $spacing-lg;
+}
+
+@mixin grid-auto-fill($min-width: 250px) {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax($min-width, 1fr));
+    gap: $spacing-lg;
+}
+

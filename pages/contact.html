@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - Lyon Tech</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../main.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="../index.html" class="logo">
+                    <img src="../assets/images/logo.jpg" alt="Logo Lyon Tech" class="logo-image" />
+                    <span class="logo-text">Lyon Tech</span>
+                </a>
+                <nav class="nav">
+                    <button class="nav-toggle" aria-label="Toggle navigation">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                    <ul class="nav-menu">
+                        <li><a href="../index.html" class="nav-link">Accueil</a></li>
+                        <li><a href="projets.html" class="nav-link">Projets</a></li>
+                        <li><a href="equipe.html" class="nav-link">Équipe</a></li>
+                        <li><a href="rejoindre.html" class="nav-link">Nous rejoindre</a></li>
+                        <li><a href="contact.html" class="nav-link active">Contact</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <section class="page-header">
+            <div class="container">
+                <h1 class="page-title">Contactez-nous</h1>
+                <p class="page-intro">
+                    Vous avez des questions sur Lyon Tech, nos projets ou souhaitez nous rejoindre ? 
+                    N'hésitez pas à nous contacter via les moyens ci-dessous.
+                </p>
+            </div>
+        </section>
+
+        <section class="contact-section">
+            <div class="container">
+                <div class="contact-grid">
+                    <div class="contact-info">
+                        <h2 class="section-title">Nos coordonnées</h2>
+                        <div class="contact-details">
+                            <div class="contact-item">
+                                <h3 class="contact-label">Email</h3>
+                                <a href="mailto:contact@lyontech.fr" class="contact-value">contact@lyontech.fr</a>
+                            </div>
+                            <div class="contact-item">
+                                <h3 class="contact-label">École</h3>
+                                <p class="contact-value">ECE - Campus de Lyon</p>
+                            </div>
+                        </div>
+
+                        <h2 class="section-title">Réseaux sociaux</h2>
+                        <div class="social-grid">
+                            <a href="#" class="social-card">
+                                <div class="social-icon">💼</div>
+                                <div class="social-name">LinkedIn</div>
+                            </a>
+                            <a href="https://www.instagram.com/lyon.techece?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" class="social-card" target="_blank">
+                                <div class="social-icon">📷</div>
+                                <div class="social-name">Instagram</div>
+                            </a>
+                            <a href="#" class="social-card">
+                                <div class="social-icon">💬</div>
+                                <div class="social-name">Discord</div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="contact-form-container">
+                        <h2 class="section-title">Formulaire de contact</h2>
+                        <form class="contact-form" id="contactForm">
+                            <div class="form-group">
+                                <label for="name" class="form-label">Nom complet</label>
+                                <input type="text" id="name" name="name" class="form-input" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" id="email" name="email" class="form-input" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="subject" class="form-label">Sujet</label>
+                                <input type="text" id="subject" name="subject" class="form-input" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="message" class="form-label">Message</label>
+                                <textarea id="message" name="message" class="form-textarea" rows="6" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Envoyer le message</button>
+                            <p class="form-note">
+                                Note: Ce formulaire est actuellement en mode démonstration. 
+                                Pour une mise en production, il faudra configurer un backend pour traiter les messages.
+                            </p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <h3>Lyon Tech</h3>
+                    <p>Association technique du campus de Lyon – ECE</p>
+                </div>
+                <div class="footer-social">
+                    <h4>Suivez-nous</h4>
+                    <div class="social-links">
+                        <a href="#" class="social-link" aria-label="LinkedIn">LinkedIn</a>
+                        <a href="https://www.instagram.com/lyon.techece?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" class="social-link" aria-label="Instagram" target="_blank">Instagram</a>
+                        <a href="#" class="social-link" aria-label="Discord">Discord</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Lyon Tech - École Centrale d'Électronique (ECE)</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../main.js"></script>
+</body>
+</html>
+
