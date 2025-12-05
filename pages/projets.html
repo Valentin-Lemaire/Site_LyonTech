@@ -11,6 +11,12 @@
         href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800&family=Roboto:wght@300;400;500;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="../main.css">
+    <script>
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        }
+    </script>
 </head>
 
 <body>
@@ -57,99 +63,61 @@
 
         <section class="projects-section">
             <div class="container">
-                <div class="projects-grid">
-                    <!-- Exemple de projet 1 -->
-                    <div class="project-card">
-                        <div class="project-status status-en-cours">En cours</div>
-                        <h3 class="project-title">Projet Robotique</h3>
-                        <p class="project-description">
-                            Développement d'un robot autonome capable de navigation et de manipulation d'objets.
-                            Ce projet combine mécanique, électronique et programmation.
-                        </p>
-                        <div class="project-tech">
-                            <span class="tech-tag">Arduino</span>
-                            <span class="tech-tag">Python</span>
-                            <span class="tech-tag">ROS</span>
-                        </div>
-                    </div>
-
-                    <!-- Exemple de projet 2 -->
-                    <div class="project-card">
-                        <div class="project-status status-en-cours">En cours</div>
-                        <h3 class="project-title">Application Web IA</h3>
-                        <p class="project-description">
-                            Création d'une application web utilisant l'intelligence artificielle pour résoudre
-                            des problèmes concrets. Interface moderne et algorithmes de machine learning.
-                        </p>
-                        <div class="project-tech">
-                            <span class="tech-tag">React</span>
-                            <span class="tech-tag">TensorFlow</span>
-                            <span class="tech-tag">Node.js</span>
-                        </div>
-                    </div>
-
-                    <!-- Exemple de projet 3 -->
-                    <div class="project-card">
-                        <div class="project-status status-termine">Terminé</div>
-                        <h3 class="project-title">Système IoT</h3>
-                        <p class="project-description">
-                            Développement d'un système d'objets connectés pour la domotique.
-                            Collecte de données, visualisation en temps réel et contrôle à distance.
-                        </p>
-                        <div class="project-tech">
-                            <span class="tech-tag">ESP32</span>
-                            <span class="tech-tag">MQTT</span>
-                            <span class="tech-tag">JavaScript</span>
-                        </div>
-                    </div>
-
-                    <!-- Exemple de projet 4 -->
-                    <div class="project-card">
-                        <div class="project-status status-en-cours">En cours</div>
-                        <h3 class="project-title">Drone Autonome</h3>
-                        <p class="project-description">
-                            Conception et programmation d'un drone avec capacités de vol autonome,
-                            reconnaissance d'images et évitement d'obstacles.
-                        </p>
-                        <div class="project-tech">
-                            <span class="tech-tag">C++</span>
-                            <span class="tech-tag">OpenCV</span>
-                            <span class="tech-tag">Pixhawk</span>
-                        </div>
-                    </div>
-
-                    <!-- Exemple de projet 5 -->
-                    <div class="project-card">
-                        <div class="project-status status-en-cours">En cours</div>
-                        <h3 class="project-title">Plateforme de Partage</h3>
-                        <p class="project-description">
-                            Développement d'une plateforme web pour partager ressources et tutoriels
-                            techniques entre membres de l'association.
-                        </p>
-                        <div class="project-tech">
-                            <span class="tech-tag">Vue.js</span>
-                            <span class="tech-tag">Django</span>
-                            <span class="tech-tag">PostgreSQL</span>
-                        </div>
-                    </div>
-
-                    <!-- Exemple de projet 6 -->
-                    <div class="project-card">
-                        <div class="project-status status-termine">Terminé</div>
-                        <h3 class="project-title">Station Météo Connectée</h3>
-                        <p class="project-description">
-                            Création d'une station météorologique connectée avec capteurs environnementaux
-                            et tableau de bord web pour visualiser les données.
-                        </p>
-                        <div class="project-tech">
-                            <span class="tech-tag">Raspberry Pi</span>
-                            <span class="tech-tag">Python</span>
-                            <span class="tech-tag">Chart.js</span>
-                        </div>
-                    </div>
+                <div class="projects-grid" id="projects-container">
+                    <p style="grid-column: 1/-1; text-align: center; padding: 2rem;">Chargement des projets...</p>
                 </div>
             </div>
         </section>
+    </main>
+
+    <script type="module">
+        import { db, collection, getDocs } from '../js/firebase-config.js';
+
+        async function loadProjects() {
+            const container = document.getElementById('projects-container');
+
+            try {
+                const querySnapshot = await getDocs(collection(db, "projects"));
+
+                if (querySnapshot.empty) {
+                    container.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted);">Aucun projet pour le moment. Revenez bientôt !</p>';
+                    return;
+                }
+
+                container.innerHTML = '';
+
+                querySnapshot.forEach((doc) => {
+                    const project = doc.data();
+                    const statusClass = project.status === 'en-cours' ? 'status-en-cours' : 'status-termine';
+                    const statusLabel = project.status === 'en-cours' ? 'En cours' : 'Terminé';
+
+                    // Générer les tags techno
+                    const techs = project.tech ? project.tech.split(',').map(t => `<span class="tech-tag">${t.trim()}</span>`).join('') : '';
+
+                    const card = `
+                        <div class="project-card">
+                            <div class="project-status ${statusClass}">${statusLabel}</div>
+                            <h3 class="project-title">${project.title || 'Projet sans titre'}</h3>
+                            <p class="project-description">
+                                ${project.description || 'Pas de description disponible.'}
+                            </p>
+                            <div class="project-tech">
+                                ${techs}
+                            </div>
+                        </div>
+                    `;
+                    container.innerHTML += card;
+                });
+            } catch (error) {
+                console.error("Erreur chargement projets:", error);
+                container.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: red;">Erreur lors du chargement des projets.</p>';
+            }
+        }
+
+        loadProjects();
+    </script>
+    </div>
+    </section>
     </main>
 
     <!-- Footer -->

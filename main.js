@@ -48,11 +48,12 @@ document.addEventListener('DOMContentLoaded', function () {
     // ===== Dark Mode Logic =====
     // Check for saved theme
     const savedTheme = localStorage.getItem('theme');
-    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
-    // Apply theme on load
-    if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
+    // Default to LIGHT mode if nothing saved (ignore system preference as requested)
+    if (savedTheme === 'dark') {
         document.documentElement.setAttribute('data-theme', 'dark');
+    } else {
+        document.documentElement.setAttribute('data-theme', 'light');
     }
 
     // Setup toggle button
@@ -65,7 +66,9 @@ document.addEventListener('DOMContentLoaded', function () {
             const currentTheme = document.documentElement.getAttribute('data-theme');
             const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
 
+            // Apply new theme
             document.documentElement.setAttribute('data-theme', newTheme);
+            // Save to localStorage so it applies to ALL pages
             localStorage.setItem('theme', newTheme);
             updateThemeIcon();
         });
@@ -117,28 +120,40 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // ===== Formulaire de contact (démonstration) =====
+    // ===== Formulaire de contact (Firebase) =====
     const contactForm = document.getElementById('contactForm');
     if (contactForm) {
-        contactForm.addEventListener('submit', function (e) {
+        contactForm.addEventListener('submit', async function (e) {
             e.preventDefault();
+            const btn = contactForm.querySelector('button[type="submit"]');
+            const originalText = btn.textContent;
+            btn.textContent = 'Envoi en cours...';
+            btn.disabled = true;
 
-            // Récupérer les valeurs du formulaire
+            // Récupérer les valeurs
             const formData = {
                 name: document.getElementById('name').value,
                 email: document.getElementById('email').value,
                 subject: document.getElementById('subject').value,
-                message: document.getElementById('message').value
+                message: document.getElementById('message').value,
+                timestamp: new Date()
             };
 
-            // Afficher un message de confirmation (en mode démonstration)
-            alert('Merci pour votre message ! En mode démonstration, le message n\'a pas été envoyé.\n\nPour une mise en production, il faudra configurer un backend pour traiter les messages.\n\nDonnées saisies:\n' +
-                'Nom: ' + formData.name + '\n' +
-                'Email: ' + formData.email + '\n' +
-                'Sujet: ' + formData.subject + '\n' +
-                'Message: ' + formData.message.substring(0, 50) + '...');
+            try {
+                // Import dynamique pour ne pas charger Firebase sur toutes les pages
+                const { db, collection, addDoc } = await import('./js/firebase-config.js');
 
-            // Optionnel: réinitialiser le formulaire
-            // contactForm.reset();
+                await addDoc(collection(db, "contacts"), formData);
+
+                alert('Merci ! Votre message a bien été envoyé à notre équipe.');
+                contactForm.reset();
+            } catch (error) {
+                console.error("Erreur d'envoi", error);
+                alert("Oups, une erreur s'est produite. Veuillez réessayer.");
+            } finally {
+                btn.textContent = originalText;
+                btn.disabled = false;
+            }
         });
     }
 });

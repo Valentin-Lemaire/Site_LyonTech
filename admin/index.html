@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Admin - Lyon Tech</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700&family=Roboto:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../main.css">
+    <style>
+        .admin-layout {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            background: var(--bg-surface);
+            border-right: 1px solid var(--border-glass);
+            padding: 2rem 1rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-title {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .nav-item {
+            padding: 1rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            border-radius: 0.5rem;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            background: rgba(23, 66, 94, 0.1);
+            color: #17425e;
+            font-weight: 600;
+        }
+
+        .admin-content {
+            padding: 2rem;
+            background: var(--bg-body);
+        }
+
+        .header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .content-card {
+            background: var(--bg-surface);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            margin-bottom: 1.5rem;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table th,
+        .data-table td {
+            text-align: left;
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-glass);
+            color: var(--text-main);
+        }
+
+        .data-table th {
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .tabs {
+            display: none;
+        }
+
+        .tabs.active {
+            display: block;
+        }
+
+        .action-btn {
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            border: none;
+            cursor: pointer;
+            font-size: 0.8rem;
+            margin-right: 0.5rem;
+        }
+
+        .btn-delete {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .btn-edit {
+            background: #dbeafe;
+            color: #1e3a8a;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal.open {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--bg-surface);
+            padding: 2rem;
+            border-radius: 1rem;
+            width: 90%;
+            max-width: 500px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="admin-layout">
+        <aside class="sidebar">
+            <div class="sidebar-title">Lyon Tech Admin</div>
+            <nav>
+                <a class="nav-item active" data-tab="messages">Messages</a>
+                <a class="nav-item" data-tab="projects">Projets</a>
+                <a class="nav-item" data-tab="team">Équipe</a>
+            </nav>
+            <div style="margin-top: auto;">
+                <button id="logoutBtn" class="nav-item"
+                    style="width: 100%; border: none; text-align: left; background: none;">Déconnexion</button>
+            </div>
+        </aside>
+
+        <main class="admin-content">
+            <div class="header-bar">
+                <h1 id="pageTitle">Messages Reçus</h1>
+                <div id="actionsContainer"></div>
+            </div>
+
+            <!-- Messages Tab -->
+            <div id="messages" class="tabs active">
+                <div class="content-card">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Nom</th>
+                                <th>Sujet</th>
+                                <th>Message</th>
+                            </tr>
+                        </thead>
+                        <tbody id="messagesTableBody">
+                            <tr>
+                                <td colspan="4">Chargement...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Projects Tab -->
+            <div id="projects" class="tabs">
+                <div class="content-card">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Titre</th>
+                                <th>Statut</th>
+                                <th>Technologies</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="projectsTableBody">
+                            <tr>
+                                <td colspan="4">Chargement...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal Ajout Projet -->
+    <div id="projectModal" class="modal">
+        <div class="modal-content">
+            <h2>Ajouter/Modifier un Projet</h2>
+            <form id="projectForm" style="display: flex; flex-direction: column; gap: 1rem;">
+                <input type="hidden" id="projectId">
+                <input type="text" id="projectTitle" placeholder="Titre du projet" class="form-input" required>
+                <select id="projectStatus" class="form-input">
+                    <option value="en-cours">En cours</option>
+                    <option value="termine">Terminé</option>
+                </select>
+                <input type="text" id="projectTech" placeholder="Technologies (séparées par des virgules)"
+                    class="form-input">
+                <textarea id="projectDesc" placeholder="Description" class="form-input" rows="4"></textarea>
+                <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Annuler</button>
+                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script type="module">
+        import { auth, db, collection, getDocs, onAuthStateChanged, signOut, addDoc, deleteDoc, doc, updateDoc } from '../js/firebase-config.js';
+
+        // Check Auth
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                window.location.href = 'login.html';
+            } else {
+                loadMessages();
+            }
+        });
+
+        // Logout
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            signOut(auth);
+        });
+
+        // Tab Navigation
+        const tabs = document.querySelectorAll('.nav-item[data-tab]');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Update Sidebar
+                document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+                tab.classList.add('active');
+
+                // Update Content
+                document.querySelectorAll('.tabs').forEach(t => t.classList.remove('active'));
+                const tabId = tab.dataset.tab;
+                document.getElementById(tabId).classList.add('active');
+
+                // Update Title & Actions
+                const titleMap = { 'messages': 'Messages Reçus', 'projects': 'Gestion des Projets', 'team': 'Gestion de l\'Équipe' };
+                document.getElementById('pageTitle').textContent = titleMap[tabId];
+
+                // Load Data
+                if (tabId === 'messages') loadMessages();
+                if (tabId === 'projects') loadProjects();
+
+                // Show Add Button for Projects
+                const actions = document.getElementById('actionsContainer');
+                actions.innerHTML = '';
+                if (tabId === 'projects') {
+                    const btn = document.createElement('button');
+                    btn.className = 'btn btn-primary';
+                    btn.textContent = '+ Ajouter un Projet';
+                    btn.onclick = () => openProjectModal();
+                    actions.appendChild(btn);
+                }
+            });
+        });
+
+        async function loadMessages() {
+            const tableBody = document.getElementById('messagesTableBody');
+            tableBody.innerHTML = '<tr><td colspan="4">Chargement...</td></tr>';
+            try {
+                const querySnapshot = await getDocs(collection(db, "contacts"));
+                tableBody.innerHTML = '';
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const date = data.timestamp ? new Date(data.timestamp.seconds * 1000).toLocaleDateString() : '-';
+                    const row = `
+                        <tr>
+                            <td>${date}</td>
+                            <td>${data.name}</td>
+                            <td>${data.subject}</td>
+                            <td>${data.message}</td>
+                        </tr>
+                    `;
+                    tableBody.innerHTML += row;
+                });
+                if (querySnapshot.empty) tableBody.innerHTML = '<tr><td colspan="4">Aucun message.</td></tr>';
+            } catch (e) {
+                console.error("Error loading messages: ", e);
+                tableBody.innerHTML = '<tr><td colspan="4">Erreur de chargement. Vérifiez les permissions Firestore.</td></tr>';
+            }
+        }
+
+        async function loadProjects() {
+            const tableBody = document.getElementById('projectsTableBody');
+            tableBody.innerHTML = '<tr><td colspan="4">Chargement...</td></tr>';
+
+            const querySnapshot = await getDocs(collection(db, "projects"));
+            tableBody.innerHTML = '';
+
+            querySnapshot.forEach((docSnap) => {
+                const data = docSnap.data();
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><strong>${data.title}</strong></td>
+                    <td><span class="project-status status-${data.status}">${data.status}</span></td>
+                    <td>${data.tech}</td>
+                    <td>
+                        <button class="action-btn btn-edit" onclick="window.editProject('${docSnap.id}')">Modif</button>
+                        <button class="action-btn btn-delete" onclick="window.deleteProject('${docSnap.id}')">Suppr</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Functions exposed to window for inline onclicks
+        window.openProjectModal = () => {
+            document.getElementById('projectForm').reset();
+            document.getElementById('projectId').value = '';
+            document.getElementById('projectModal').classList.add('open');
+        };
+
+        window.closeModal = () => {
+            document.getElementById('projectModal').classList.remove('open');
+        };
+
+        // Form Submit
+        document.getElementById('projectForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('projectId').value;
+            const data = {
+                title: document.getElementById('projectTitle').value,
+                status: document.getElementById('projectStatus').value,
+                tech: document.getElementById('projectTech').value,
+                description: document.getElementById('projectDesc').value
+            };
+
+            try {
+                if (id) {
+                    await updateDoc(doc(db, "projects", id), data);
+                } else {
+                    await addDoc(collection(db, "projects"), data);
+                }
+                closeModal();
+                loadProjects();
+            } catch (e) {
+                alert("Erreur lors de l'enregistrement : " + e.message);
+            }
+        });
+
+        window.deleteProject = async (id) => {
+            if (confirm('Voulez-vous vraiment supprimer ce projet ?')) {
+                await deleteDoc(doc(db, "projects", id));
+                loadProjects();
+            }
+        };
+
+        window.editProject = async (id) => {
+            // Dans une vraie app, on éviterait de refaire une requête en stockant les données chargéés
+            // Ici pour simplifier on ne remplit pas le form (TODO: Améliorer)
+            alert("Fonctionnalité d'édition à implémenter complètement (récupérer les données du projet " + id + ")");
+        };
+
+    </script>
+</body>
+
+</html>

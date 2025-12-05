@@ -8,6 +8,8 @@
   },
   "devDependencies": {
     "sass": "^1.70.0"
+  },
+  "dependencies": {
+    "firebase": "^12.6.0"
   }
 }
-
