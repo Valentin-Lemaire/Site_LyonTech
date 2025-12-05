@@ -3,12 +3,20 @@
 
 // ===== Header & Navigation =====
 .header {
-    background-color: $bg-light;
-    border-bottom: 1px solid $border-color;
+    background: var(--glass-bg);
+    backdrop-filter: blur($glass-blur);
+    -webkit-backdrop-filter: blur($glass-blur);
+    border-bottom: 1px solid var(--glass-border);
     position: sticky;
     top: 0;
-    z-index: 100;
-    box-shadow: $shadow;
+    z-index: 1000;
+    box-shadow: $shadow-sm;
+    transition: $transition-base;
+
+    &.scrolled {
+        background: var(--bg-surface);
+        box-shadow: $shadow-md;
+    }
 }
 
 .header-content {
@@ -21,33 +29,31 @@
 .logo {
     display: inline-flex;
     align-items: center;
-    gap: $spacing-xs;
+    gap: $spacing-sm;
     text-decoration: none;
-    @include transition(opacity);
+    transition: $transition-base;
 
     &:hover {
-        opacity: 0.8;
+        transform: translateY(-1px);
     }
 }
 
 .logo-image {
-    height: 40px;
-    width: 40px;
+    height: 45px;
+    width: 45px;
     display: block;
     border-radius: 50%;
     object-fit: cover;
+    box-shadow: $shadow-sm;
 }
 
 .logo-text {
     font-family: $font-family-heading;
     font-size: $font-size-2xl;
-    font-weight: $font-weight-bold;
+    font-weight: $font-weight-extrabold;
     color: $primary-color;
-    @include transition(color);
-}
-
-.logo:hover .logo-text {
-    color: $primary-hover;
+    letter-spacing: -0.5px;
+    transition: $transition-base;
 }
 
 .nav {
@@ -61,14 +67,15 @@
     border: none;
     cursor: pointer;
     padding: $spacing-xs;
-    gap: 4px;
+    gap: 6px;
+    z-index: 1001;
 
     span {
-        width: 25px;
+        width: 30px;
         height: 3px;
-        background-color: $text-dark;
-        @include transition(all);
-        border-radius: 2px;
+        background-color: $primary-color;
+        transition: $transition-base;
+        border-radius: 4px;
     }
 }
 
@@ -80,28 +87,63 @@
 }
 
 .nav-link {
-    color: $text-dark;
+    color: $text-light;
     text-decoration: none;
     font-weight: $font-weight-medium;
-    @include transition(color);
+    font-size: $font-size-base;
+    transition: $transition-base;
     position: relative;
+    padding: 0.5rem 0;
 
     &:hover {
         color: $primary-color;
     }
 
+    &::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background-color: $secondary-color;
+        transition: $transition-base;
+        border-radius: 2px;
+    }
+
+    &:hover::after,
+    &.active::after {
+        width: 100%;
+    }
+
     &.active {
         color: $primary-color;
-
-        &::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background-color: $primary-color;
-        }
+        font-weight: $font-weight-bold;
     }
 }
 
+// Theme Toggle Button
+.theme-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    color: var(--text-main);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: $transition-base;
+
+    &:hover {
+        background-color: var(--border-glass);
+        color: $primary-color;
+        transform: rotate(15deg);
+    }
+
+    svg {
+        width: 20px;
+        height: 20px;
+        fill: currentColor;
+    }
+}
