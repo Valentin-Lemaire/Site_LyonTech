@@ -146,6 +146,12 @@
             gap: 0.5rem;
         }
 
+        .admin-content {
+            padding: 3rem 4rem;
+            /* Increased spacing */
+            overflow-y: auto;
+        }
+
         .action-btn {
             width: 32px;
             height: 32px;
@@ -374,8 +380,22 @@
                     </svg>
                     Équipe
                 </a>
+                <a class="nav-item" data-tab="settings">
+                    <svg class="nav-icon" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <path
+                            d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z">
+                        </path>
+                    </svg>
+                    Paramètres
+                </a>
             </nav>
-            <div>
+            <div style="margin-top: auto; display: flex; flex-direction: column; gap: 0.5rem;">
+                <button id="themeToggleBtn" class="nav-item"
+                    style="justify-content: flex-start; background: transparent; border: 1px solid var(--border-glass);">
+                    <span id="themeIcon" style="display:flex;"></span>
+                    <span id="themeText">Mode Sombre</span>
+                </button>
                 <button id="logoutBtn" class="btn-logout">
                     <svg class="nav-icon" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
@@ -457,6 +477,49 @@
                             </tr>
                         </tbody>
                     </table>
+                </div>
+            </div>
+
+            <!-- TAB 4: Paramètres -->
+            <div id="settings" class="tabs">
+                <div style="display:grid; gap:2rem; max-width:600px;">
+                    <!-- Email Update -->
+                    <div class="content-card">
+                        <h2
+                            style="margin-bottom:1rem; border-bottom:1px solid var(--border-glass); padding-bottom:0.5rem;">
+                            Modifier l'Email</h2>
+                        <form id="emailForm" style="display:flex; flex-direction:column; gap:1rem;">
+                            <div>
+                                <label style="display:block; margin-bottom:0.5rem; color:var(--text-muted);">Nouvelle
+                                    adresse Email</label>
+                                <input type="email" id="newEmail" class="form-input" required
+                                    placeholder="nouveau@email.com">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Mettre à jour l'Email</button>
+                        </form>
+                    </div>
+
+                    <!-- Password Update -->
+                    <div class="content-card">
+                        <h2
+                            style="margin-bottom:1rem; border-bottom:1px solid var(--border-glass); padding-bottom:0.5rem;">
+                            Modifier le Mot de Passe</h2>
+                        <form id="passwordForm" style="display:flex; flex-direction:column; gap:1rem;">
+                            <div>
+                                <label style="display:block; margin-bottom:0.5rem; color:var(--text-muted);">Nouveau Mot
+                                    de Passe</label>
+                                <input type="password" id="newPassword" class="form-input" required minlength="6"
+                                    placeholder="******">
+                            </div>
+                            <div>
+                                <label style="display:block; margin-bottom:0.5rem; color:var(--text-muted);">Confirmer
+                                    le Mot de Passe</label>
+                                <input type="password" id="confirmPassword" class="form-input" required minlength="6"
+                                    placeholder="******">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Mettre à jour le Mot de Passe</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </main>
@@ -559,6 +622,32 @@
         });
         document.getElementById('logoutBtn').addEventListener('click', () => auth.signOut());
 
+        // --- THEME TOGGLE (Admin) ---
+        const themeBtn = document.getElementById('themeToggleBtn');
+        const themeIcon = document.getElementById('themeIcon');
+        const themeText = document.getElementById('themeText');
+
+        function updateThemeUI() {
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            themeIcon.innerHTML = isDark
+                ? '<svg class="nav-icon" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>' // Sun
+                : '<svg class="nav-icon" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>'; // Moon
+            themeText.textContent = isDark ? 'Mode Clair' : 'Mode Sombre';
+        }
+
+        // Init UI
+        updateThemeUI();
+
+        if (themeBtn) {
+            themeBtn.addEventListener('click', () => {
+                const current = document.documentElement.getAttribute('data-theme');
+                const next = current === 'dark' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', next);
+                localStorage.setItem('theme', next);
+                updateThemeUI();
+            });
+        }
+
         // --- NAVIGATION TABS ---
         const tabs = document.querySelectorAll('.nav-item[data-tab]');
         const mainBtn = document.getElementById('mainActionBtn');
@@ -573,7 +662,12 @@
                 document.getElementById(tabId).classList.add('active');
 
                 // Titles & Buttons
-                const titleMap = { 'messages': 'Messages Reçus', 'projects': 'Gestion des Projets', 'team': 'Gestion de l\'Équipe' };
+                const titleMap = {
+                    'messages': 'Messages Reçus',
+                    'projects': 'Gestion des Projets',
+                    'team': 'Gestion de l\'Équipe',
+                    'settings': 'Paramètres du Compte'
+                };
                 document.getElementById('pageTitle').textContent = titleMap[tabId];
 
                 // Button Logic
@@ -602,6 +696,69 @@
         function closeModal(modalId) {
             document.getElementById(modalId).classList.remove('open');
         }
+
+        // --- ERROR HANDLING HELPER ---
+        function getErrorMessage(error) {
+            console.error("Firebase Error:", error); // Keep technical log for debugging
+            switch (error.code) {
+                case 'auth/requires-recent-login':
+                    return "Par sécurité, cette action nécessite une connexion récente.\nVeuillez vous déconnecter et vous reconnecter, puis réessayez.";
+                case 'auth/weak-password':
+                    return "Le mot de passe est trop faible. Il doit contenir au moins 6 caractères.";
+                case 'auth/email-already-in-use':
+                    return "Cette adresse email est déjà utilisée par un autre compte.";
+                case 'auth/invalid-email':
+                    return "L'adresse email saisie n'est pas valide.";
+                case 'auth/operation-not-allowed':
+                    return "Cette opération n'est pas activée dans la configuration Firebase.";
+                case 'auth/user-token-expired':
+                    return "Votre session a expiré. Veuillez vous reconnecter.";
+                case 'permission-denied':
+                    return "Accès refusé. Vous n'avez pas les droits suffisants.";
+                case 'unavailable':
+                    return "Le service est temporairement indisponible. Vérifiez votre connexion.";
+                default:
+                    return "Une erreur est survenue : " + error.message;
+            }
+        }
+
+        // --- SETTINGS LOGIC ---
+        document.getElementById('emailForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const newEmail = document.getElementById('newEmail').value;
+            const user = auth.currentUser;
+            if (user) {
+                user.verifyBeforeUpdateEmail(newEmail).then(() => {
+                    alert('Un email de vérification a été envoyé à ' + newEmail + '.\nVeuillez cliquer sur le lien dans cet email pour valider le changement.');
+                }).catch((error) => {
+                    alert(getErrorMessage(error));
+                });
+            }
+        });
+
+        document.getElementById('passwordForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const newPass = document.getElementById('newPassword').value;
+            const confirmPass = document.getElementById('confirmPassword').value;
+
+            if (newPass !== confirmPass) {
+                alert('Les deux mots de passe ne correspondent pas.');
+                return;
+            }
+
+            const user = auth.currentUser;
+            if (user) {
+                user.updatePassword(newPass).then(() => {
+                    alert('Mot de passe mis à jour avec succès !');
+                    document.getElementById('passwordForm').reset();
+                }).catch((error) => {
+                    alert(getErrorMessage(error));
+                });
+            }
+        });
+
+        // --- REST OF THE LOGIC (Messages, Projects, Team) remains below ---
+        // (Just keeping the structure consistent with previous rewrites)
 
         // --- MESSAGES LOGIC ---
         function loadMessages() {
