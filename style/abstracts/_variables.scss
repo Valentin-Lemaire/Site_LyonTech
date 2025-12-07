@@ -31,29 +31,35 @@
 }
 
 [data-theme="dark"] {
-    // Adjust colors for dark mode
+    // === Modern Sleek Dark Mode ===
 
-    // Primary becomes brighter for visibility on dark
-    --l-primary: 60%;
+    // Primary: Brighter blue to pop against dark bg
+    --h-primary: 210;
+    --s-primary: 100%;
+    --l-primary: 60%; // #60a5fa (Blue-400 equivalent)
 
-    // Secondary adjusted
-    --l-secondary: 40%;
+    // Secondary: Softer Cyan/Blue
+    --h-secondary: 199;
+    --s-secondary: 89%;
+    --l-secondary: 48%;
 
-    // Backgrounds
-    --bg-body: #0a192f; // Deep Navy
-    --bg-surface: #112240; // Light Navy
-    --bg-section: #0a192f; // Same as body or slightly diff
-    --bg-glass: rgba(17, 34, 64, 0.7);
-    --border-glass: rgba(255, 255, 255, 0.1);
+    // Backgrounds (Zinc/Slate Palette)
+    --bg-body: #09090b; // Almost black (Zinc-950)
+    --bg-surface: #18181b; // Very dark gray (Zinc-900)
+    --bg-section: #121215; // Slightly lighter than body
+
+    // Glass Effect adapted for dark mode
+    --bg-glass: rgba(24, 24, 27, 0.7); // Dark semi-transparent
+    --border-glass: rgba(255, 255, 255, 0.08); // Subtle white border
 
     // Text
-    --text-main: #e6f1ff; // White-ish
-    --text-muted: #a8b2d1; // Light Gray
-    --text-light: #8892b0;
+    --text-main: #f4f4f5; // Zinc-100 (Almost white)
+    --text-muted: #a1a1aa; // Zinc-400 (Muted gray)
+    --text-light: #71717a; // Zinc-500 (Darker gray)
 
     // Shadows
     --shadow-color: 0, 0, 0;
-    --shadow-strength: 0.3;
+    --shadow-strength: 0.5; // Stronger shadows needed in dark mode
 }
 
 // ===== SCSS Mapping =====

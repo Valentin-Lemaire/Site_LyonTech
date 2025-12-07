@@ -53,16 +53,16 @@
 }
 
 .btn-secondary {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(var(--h-primary), var(--s-primary), var(--l-primary), 0.1); // Tinted background
     backdrop-filter: blur(10px);
-    color: white;
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    color: var(--text-main); // Adaptive text color
+    border: 1px solid var(--border-glass);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 
     &:hover {
-        background: rgba(255, 255, 255, 0.2);
-        border-color: white;
+        background: rgba(var(--h-primary), var(--s-primary), var(--l-primary), 0.2);
+        border-color: var(--primary-color);
         transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        color: var(--primary-color);
     }
 }

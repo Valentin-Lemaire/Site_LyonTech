@@ -119,42 +119,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // ===== Formulaire de contact (démonstration) =====
-    // ===== Formulaire de contact (Firebase) =====
-    const contactForm = document.getElementById('contactForm');
-    if (contactForm) {
-        contactForm.addEventListener('submit', async function (e) {
-            e.preventDefault();
-            const btn = contactForm.querySelector('button[type="submit"]');
-            const originalText = btn.textContent;
-            btn.textContent = 'Envoi en cours...';
-            btn.disabled = true;
-
-            // Récupérer les valeurs
-            const formData = {
-                name: document.getElementById('name').value,
-                email: document.getElementById('email').value,
-                subject: document.getElementById('subject').value,
-                message: document.getElementById('message').value,
-                timestamp: new Date()
-            };
-
-            try {
-                // Import dynamique pour ne pas charger Firebase sur toutes les pages
-                const { db, collection, addDoc } = await import('./js/firebase-config.js');
-
-                await addDoc(collection(db, "contacts"), formData);
-
-                alert('Merci ! Votre message a bien été envoyé à notre équipe.');
-                contactForm.reset();
-            } catch (error) {
-                console.error("Erreur d'envoi", error);
-                alert("Oups, une erreur s'est produite. Veuillez réessayer.");
-            } finally {
-                btn.textContent = originalText;
-                btn.disabled = false;
-            }
-        });
-    }
+    // ===== Fin Main JS =====
 });
 

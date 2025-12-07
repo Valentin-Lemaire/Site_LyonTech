@@ -11,6 +11,12 @@
         href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800&family=Roboto:wght@300;400;500;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="../main.css">
+    <script>
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        }
+    </script>
     <style>
         .login-container {
             min-height: 100vh;
@@ -93,34 +99,68 @@
         </div>
     </div>
 
-    <script type="module">
-        import { auth, signInWithEmailAndPassword, onAuthStateChanged } from '../js/firebase-config.js';
+    <!-- Firebase Compat SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
 
-        // Redirection si déjà connecté
-        onAuthStateChanged(auth, (user) => {
+    <script>
+        // Config
+        const firebaseConfig = {
+            apiKey: "AIzaSyBRnfU9g641yhKsjGXxbV_KbzRN3whfa1M",
+            authDomain: "site-lyon-tech.firebaseapp.com",
+            projectId: "site-lyon-tech",
+            storageBucket: "site-lyon-tech.firebasestorage.app",
+            messagingSenderId: "382756341988",
+            appId: "1:382756341988:web:189cf01cb7819764a1c4f1",
+            measurementId: "G-HHNHXMTZ75"
+        };
+
+        // Init
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
+        // Redirection si déjà connecté (avec délai pour éviter boucle)
+        // On ne redirige plus automatiquement au chargement pour casser la boucle si besoin
+        // L'utilisateur pourra cliquer sur un bouton "Accéder au dashboard" s'il est déjà auth
+        auth.onAuthStateChanged((user) => {
             if (user) {
-                window.location.href = 'index.html';
+                console.log("Utilisateur connecté :", user.email);
+                // Optionnel : Afficher un message "Déjà connecté" avec un lien vers l'index
+                // window.location.href = 'index.html'; // Désactivé pour test
+                loginForm.style.display = 'none';
+                document.querySelector('.login-title').textContent = 'Bienvenue ' + user.email;
+
+                const accessBtn = document.createElement('a');
+                accessBtn.href = 'index.html';
+                accessBtn.className = 'btn btn-primary';
+                accessBtn.style.display = 'block';
+                accessBtn.style.textAlign = 'center';
+                accessBtn.style.marginTop = '1rem';
+                accessBtn.style.textDecoration = 'none';
+                accessBtn.textContent = 'Accéder au Tableau de Bord';
+                document.querySelector('.login-card').appendChild(accessBtn);
             }
         });
 
         const loginForm = document.getElementById('loginForm');
         const errorMsg = document.getElementById('error-msg');
 
-        loginForm.addEventListener('submit', async (e) => {
+        loginForm.addEventListener('submit', (e) => {
             e.preventDefault();
             errorMsg.style.display = 'none';
 
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
 
-            try {
-                await signInWithEmailAndPassword(auth, email, password);
-                // La redirection sera gérée par le onAuthStateChanged
-            } catch (error) {
-                console.error("Erreur de connexion:", error);
-                errorMsg.textContent = "Erreur : " + error.message;
-                errorMsg.style.display = 'block';
-            }
+            auth.signInWithEmailAndPassword(email, password)
+                .then(() => {
+                    window.location.href = 'index.html'; // Redirection explicite après succès
+                })
+                .catch((error) => {
+                    console.error("Erreur de connexion:", error);
+                    errorMsg.textContent = "Erreur : " + error.message;
+                    errorMsg.style.display = 'block';
+                });
         });
     </script>
 </body>

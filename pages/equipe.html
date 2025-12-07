@@ -60,138 +60,34 @@
             </div>
         </section>
 
-        <section class="team-section">
+        <section class="team-section" id="section-bureau" style="display:none;">
             <div class="container">
                 <h2 class="section-title">Le Bureau</h2>
-                <div class="team-grid">
-                    <!-- Exemple membre bureau 1 -->
-                    <div class="member-card">
-                        <div class="member-avatar">
-                            <div class="avatar-placeholder">PD</div>
-                        </div>
-                        <h3 class="member-name">Prénom Nom</h3>
-                        <p class="member-role">Président</p>
-                        <p class="member-promo">Promo 2025</p>
-                    </div>
-
-                    <!-- Exemple membre bureau 2 -->
-                    <div class="member-card">
-                        <div class="member-avatar">
-                            <div class="avatar-placeholder">VP</div>
-                        </div>
-                        <h3 class="member-name">Prénom Nom</h3>
-                        <p class="member-role">Vice-Président</p>
-                        <p class="member-promo">Promo 2025</p>
-                    </div>
-
-                    <!-- Exemple membre bureau 3 -->
-                    <div class="member-card">
-                        <div class="member-avatar">
-                            <div class="avatar-placeholder">TR</div>
-                        </div>
-                        <h3 class="member-name">Prénom Nom</h3>
-                        <p class="member-role">Trésorier</p>
-                        <p class="member-promo">Promo 2026</p>
-                    </div>
-
-                    <!-- Exemple membre bureau 4 -->
-                    <div class="member-card">
-                        <div class="member-avatar">
-                            <div class="avatar-placeholder">SG</div>
-                        </div>
-                        <h3 class="member-name">Prénom Nom</h3>
-                        <p class="member-role">Secrétaire Général</p>
-                        <p class="member-promo">Promo 2026</p>
-                    </div>
-                </div>
+                <div class="team-grid" id="team-bureau"></div>
             </div>
         </section>
 
-        <section class="team-section">
+        <section class="team-section" id="section-responsables" style="display:none;">
             <div class="container">
-                <h2 class="section-title">Responsables de Pôles</h2>
-                <div class="team-grid">
-                    <!-- Exemple responsable pôle 1 -->
-                    <div class="member-card">
-                        <div class="member-avatar">
-                            <div class="avatar-placeholder">RP</div>
-                        </div>
-                        <h3 class="member-name">Prénom Nom</h3>
-                        <p class="member-role">Responsable Pôle Robotique</p>
-                        <p class="member-promo">Promo 2025</p>
-                    </div>
-
-                    <!-- Exemple responsable pôle 2 -->
-                    <div class="member-card">
-                        <div class="member-avatar">
-                            <div class="avatar-placeholder">IA</div>
-                        </div>
-                        <h3 class="member-name">Prénom Nom</h3>
-                        <p class="member-role">Responsable Pôle IA</p>
-                        <p class="member-promo">Promo 2025</p>
-                    </div>
-
-                    <!-- Exemple responsable pôle 3 -->
-                    <div class="member-card">
-                        <div class="member-avatar">
-                            <div class="avatar-placeholder">WEB</div>
-                        </div>
-                        <h3 class="member-name">Prénom Nom</h3>
-                        <p class="member-role">Responsable Pôle Web</p>
-                        <p class="member-promo">Promo 2026</p>
-                    </div>
-
-                    <!-- Exemple responsable pôle 4 -->
-                    <div class="member-card">
-                        <div class="member-avatar">
-                            <div class="avatar-placeholder">ELEC</div>
-                        </div>
-                        <h3 class="member-name">Prénom Nom</h3>
-                        <p class="member-role">Responsable Pôle Électronique</p>
-                        <p class="member-promo">Promo 2026</p>
-                    </div>
-                </div>
+                <h2 class="section-title">Responsables de Pôles et Projets</h2>
+                <div class="team-grid" id="team-responsables"></div>
             </div>
         </section>
 
-        <section class="team-section">
+        <section class="team-section" id="section-membres" style="display:none;">
             <div class="container">
                 <h2 class="section-title">Membres Actifs</h2>
-                <div class="team-grid">
-                    <!-- Exemples membres actifs -->
-                    <div class="member-card">
-                        <div class="member-avatar">
-                            <div class="avatar-placeholder">M1</div>
-                        </div>
-                        <h3 class="member-name">Prénom Nom</h3>
-                        <p class="member-role">Membre Actif</p>
-                        <p class="member-promo">Promo 2027</p>
-                    </div>
-
-                    <div class="member-card">
-                        <div class="member-avatar">
-                            <div class="avatar-placeholder">M2</div>
-                        </div>
-                        <h3 class="member-name">Prénom Nom</h3>
-                        <p class="member-role">Membre Actif</p>
-                        <p class="member-promo">Promo 2027</p>
-                    </div>
-
-                    <div class="member-card">
-                        <div class="member-avatar">
-                            <div class="avatar-placeholder">M3</div>
-                        </div>
-                        <h3 class="member-name">Prénom Nom</h3>
-                        <p class="member-role">Membre Actif</p>
-                        <p class="member-promo">Promo 2028</p>
-                    </div>
-                </div>
+                <div class="team-grid" id="team-membres"></div>
             </div>
         </section>
+
+        <p id="loadingTeam" style="text-align:center; padding:3rem; color:var(--text-muted);">Chargement de l'équipe...
+        </p>
     </main>
 
     <!-- Footer -->
     <footer class="footer">
+        <!-- ... (Footer content remains same) ... -->
         <div class="container">
             <div class="footer-content">
                 <div class="footer-info">
@@ -213,6 +109,91 @@
             </div>
         </div>
     </footer>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyBRnfU9g641yhKsjGXxbV_KbzRN3whfa1M",
+            authDomain: "site-lyon-tech.firebaseapp.com",
+            projectId: "site-lyon-tech",
+            storageBucket: "site-lyon-tech.firebasestorage.app",
+            messagingSenderId: "382756341988",
+            appId: "1:382756341988:web:189cf01cb7819764a1c4f1",
+            measurementId: "G-HHNHXMTZ75"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        db.collection("team").get().then((querySnapshot) => {
+            const bureauEl = document.getElementById('team-bureau');
+            const respoEl = document.getElementById('team-responsables');
+            const memberEl = document.getElementById('team-membres');
+
+            let hasBureau = false;
+            let hasRespo = false;
+            let hasMember = false;
+
+            querySnapshot.forEach((doc) => {
+                const data = doc.data();
+                const card = createMemberCard(data);
+
+                if (data.category === 'bureau') {
+                    bureauEl.innerHTML += card;
+                    hasBureau = true;
+                } else if (data.category === 'responsable') {
+                    respoEl.innerHTML += card;
+                    hasRespo = true;
+                } else {
+                    memberEl.innerHTML += card;
+                    hasMember = true;
+                }
+            });
+
+            document.getElementById('loadingTeam').style.display = 'none';
+
+            if (hasBureau) document.getElementById('section-bureau').style.display = 'block';
+            if (hasRespo) document.getElementById('section-responsables').style.display = 'block';
+            if (hasMember) document.getElementById('section-membres').style.display = 'block';
+        }).catch(e => {
+            console.error(e);
+            document.getElementById('loadingTeam').innerHTML = "Erreur de chargement de l'équipe.";
+        });
+
+        function createMemberCard(data) {
+            // Placeholder si pas d'image
+            let imageHtml = '';
+            if (data.image) {
+                imageHtml = `<img src="${data.image}" alt="${data.name}" style="width:100%; height:100%; object-fit:cover;">`;
+            } else {
+                // Initials as placeholder
+                const initials = data.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+                imageHtml = `<div class="avatar-placeholder">${initials}</div>`;
+            }
+
+            let linkedinLink = '';
+            if (data.linkedin) {
+                // S'assurer que le lien commence par http
+                const url = data.linkedin.startsWith('http') ? data.linkedin : 'https://' + data.linkedin;
+                linkedinLink = `<a href="${url}" target="_blank" class="member-social" title="LinkedIn">
+                    <svg style="width:20px;height:20px;fill:currentColor;" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                </a>`;
+            }
+
+            return `
+                <div class="member-card" style="position:relative;">
+                    <div class="member-avatar" style="overflow:hidden;">
+                        ${imageHtml}
+                    </div>
+                    <h3 class="member-name">${data.name}</h3>
+                    <p class="member-role" style="color:var(--primary-color); font-weight:500;">${data.role}</p>
+                    ${linkedinLink ? `<div style="margin-top:0.5rem;">${linkedinLink}</div>` : ''}
+                </div>
+            `;
+        }
+    </script>
 
     <script src="../main.js"></script>
 </body>
