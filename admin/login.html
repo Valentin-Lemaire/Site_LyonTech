@@ -12,10 +12,14 @@
         rel="stylesheet">
     <link rel="stylesheet" href="../main.css">
     <script>
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme === 'dark') {
-            document.documentElement.setAttribute('data-theme', 'dark');
-        }
+        (function () {
+            const params = new URLSearchParams(window.location.search);
+            const theme = params.get('theme') || localStorage.getItem('theme');
+            if (theme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                try { localStorage.setItem('theme', 'dark'); } catch (e) { }
+            }
+        })();
     </script>
     <style>
         .login-container {

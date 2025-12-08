@@ -10,10 +10,14 @@
         rel="stylesheet">
     <link rel="stylesheet" href="../main.css">
     <script>
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme === 'dark') {
-            document.documentElement.setAttribute('data-theme', 'dark');
-        }
+        (function () {
+            const params = new URLSearchParams(window.location.search);
+            const theme = params.get('theme') || localStorage.getItem('theme');
+            if (theme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                try { localStorage.setItem('theme', 'dark'); } catch (e) { }
+            }
+        })();
     </script>
     <style>
         .admin-layout {
@@ -645,6 +649,10 @@
                 document.documentElement.setAttribute('data-theme', next);
                 localStorage.setItem('theme', next);
                 updateThemeUI();
+
+                const newUrl = new URL(window.location);
+                newUrl.searchParams.set('theme', next);
+                window.history.replaceState({}, '', newUrl);
             });
         }
 
@@ -769,20 +777,39 @@
                 if (snap.empty) { tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">Aucun message.</td></tr>'; return; }
                 snap.forEach(doc => {
                     const d = doc.data();
+                    const isRead = d.read === true; // Default false if undefined
                     const date = d.timestamp ? new Date(d.timestamp.seconds * 1000).toLocaleDateString() : '-';
                     const safeName = (d.name || 'Anonyme').replace(/'/g, "\\'");
                     const safeEmail = (d.email || '-').replace(/'/g, "\\'");
                     const safeSubject = (d.subject || 'Sans sujet').replace(/'/g, "\\'");
                     const safeMessage = (d.message || '').replace(/'/g, "&#39;").replace(/"/g, "&quot;").replace(/\n/g, "<br>");
 
+                    // Visual Read/Unread State
+                    let statusHtml = '';
+                    if (d.readBy) {
+                        // Extract name from email for shorter display (e.g. "ramadane" from "ramadane@...")
+                        const reader = d.readBy.split('@')[0];
+                        statusHtml = `<span style="color:#9ca3af; font-size:0.8em; display:block;">Lu par ${reader}</span>`;
+                    } else if (d.read) {
+                        // Legacy support for messages marked read before this feature
+                        statusHtml = '<span style="color:#9ca3af; font-size:0.8em;">Lu</span>';
+                    } else {
+                        statusHtml = '<span style="color:var(--primary-color); font-size:0.8em;">● Nouveau</span>';
+                    }
+
+                    const isUnread = !d.read && !d.readBy;
+
                     tbody.innerHTML += `
-                        <tr>
+                        <tr id="row-${doc.id}" style="${isUnread ? 'font-weight:600; background:rgba(var(--h-primary), var(--s-primary), var(--l-primary), 0.05);' : ''}">
                             <td style="white-space:nowrap; color:var(--text-muted); font-size:0.9em;">${date}</td>
-                            <td style="font-weight:600;">${d.name || 'Anonyme'}</td>
+                            <td>
+                                ${d.name || 'Anonyme'}
+                                ${statusHtml}
+                            </td>
                             <td>${d.email || '-'}</td>
                             <td>${d.subject || 'Sans sujet'}</td>
                             <td style="text-align:right;">
-                                <button class="action-btn" onclick="viewMessage('${date}', '${safeName}', '${safeEmail}', '${safeSubject}', '${safeMessage}')" title="Lire le message">
+                                <button class="action-btn" onclick="viewMessage('${doc.id}', '${date}', '${safeName}', '${safeEmail}', '${safeSubject}', '${safeMessage}')" title="Lire le message">
                                     <svg class="action-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                                 </button>
                             </td>
@@ -790,7 +817,35 @@
                 });
             });
         }
-        function viewMessage(date, name, email, subject, message) {
+        function viewMessage(id, date, name, email, subject, message) {
+            const user = auth.currentUser;
+            const userEmail = user ? user.email : 'Admin';
+
+            // Mark as read in DB if not already read (or if we want to update who read it last? let's stick to first reader logic, or overwrite. Overwriting is simpler for now to confirm "I saw it")
+            // Actually, usually we keep the FIRST reader. Let's check UI row.
+            const row = document.getElementById(`row-${id}`);
+
+            // If currently unread (bold), mark it
+            if (row && row.style.fontWeight === '600') {
+                // Update UI immediately
+                row.style.fontWeight = 'normal';
+                row.style.background = 'transparent';
+
+                const nameCell = row.cells[1]; // 2nd column
+                // Remove old badge if any and add new one
+                const readerName = userEmail.split('@')[0];
+                const existingSpan = nameCell.querySelector('span');
+                if (existingSpan) existingSpan.remove();
+                nameCell.innerHTML += `<span style="color:#9ca3af; font-size:0.8em; display:block;">Lu par ${readerName}</span>`;
+
+                // Update DB
+                db.collection("contacts").doc(id).update({
+                    read: true,
+                    readBy: userEmail,
+                    readAt: firebase.firestore.FieldValue.serverTimestamp()
+                }).catch(err => console.error(err));
+            }
+
             const content = document.getElementById('msgDetailContent');
             content.innerHTML = `
                 <div style="display:grid; grid-template-columns: 100px 1fr; gap: 0.5rem; align-items:center;">

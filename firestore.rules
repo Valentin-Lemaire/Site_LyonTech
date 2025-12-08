@@ -1,0 +1,32 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // --- FONCTION HELPER ---
+    // Vérifie si l'utilisateur est connecté (Admin)
+    function isAdmin() {
+      return request.auth != null;
+    }
+
+    // --- COLLECTION PROJETS ---
+    match /projects/{projectId} {
+      allow read: if true; // Public : tout le monde peut voir les projets
+      allow write: if isAdmin(); // Seul l'admin peut ajouter/modifier/supprimer
+    }
+
+    // --- COLLECTION EQUIPE ---
+    match /team/{memberId} {
+      allow read: if true; // Public : tout le monde peut voir l'équipe
+      allow write: if isAdmin(); // Seul l'admin peut gérer l'équipe
+    }
+
+    // --- COLLECTION CONTACTS ---
+    match /contacts/{contactId} {
+      // Public : Tout le monde peut CRÉER un message (envoyer)
+      allow create: if true;
+      
+      // Admin : Seul l'admin peut lire les messages ou les modifier (ex: marquer comme lu)
+      allow read, update, delete: if isAdmin();
+    }
+  }
+}

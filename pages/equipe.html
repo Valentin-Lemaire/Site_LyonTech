@@ -12,10 +12,14 @@
         rel="stylesheet">
     <link rel="stylesheet" href="../main.css">
     <script>
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme === 'dark') {
-            document.documentElement.setAttribute('data-theme', 'dark');
-        }
+        (function () {
+            const params = new URLSearchParams(window.location.search);
+            const theme = params.get('theme') || localStorage.getItem('theme');
+            if (theme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                try { localStorage.setItem('theme', 'dark'); } catch (e) { }
+            }
+        })();
     </script>
 </head>
 
@@ -87,25 +91,24 @@
 
     <!-- Footer -->
     <footer class="footer">
-        <!-- ... (Footer content remains same) ... -->
         <div class="container">
             <div class="footer-content">
                 <div class="footer-info">
                     <h3>Lyon Tech</h3>
-                    <p>Association technique du campus de Lyon – ECE</p>
+                    <p>Association technique de l'ECE Lyon</p>
                 </div>
                 <div class="footer-social">
                     <h4>Suivez-nous</h4>
                     <div class="social-links">
-                        <a href="#" class="social-link" aria-label="LinkedIn">LinkedIn</a>
+                        <a href="#" class="social-link" aria-label="LinkedIn" target="_blank">LinkedIn</a>
                         <a href="https://www.instagram.com/lyon.techece?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
                             class="social-link" aria-label="Instagram" target="_blank">Instagram</a>
-                        <a href="#" class="social-link" aria-label="Discord">Discord</a>
+                        <a href="#" class="social-link" aria-label="Discord" target="_blank">Discord</a>
                     </div>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2024 Lyon Tech - École Centrale d'Électronique (ECE)</p>
+                <p>&copy; 2025 Lyon Tech - École Centrale d'Électronique (ECE)</p>
             </div>
         </div>
     </footer>
