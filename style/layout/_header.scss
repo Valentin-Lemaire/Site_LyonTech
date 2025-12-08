@@ -58,17 +58,18 @@
 
 .nav {
     position: relative;
+    z-index: 1001;
 }
 
 .nav-toggle {
-    display: none;
+    display: none; // Hidden on desktop by default
     flex-direction: column;
     background: none;
     border: none;
     cursor: pointer;
     padding: $spacing-xs;
     gap: 6px;
-    z-index: 1001;
+    z-index: 1002;
 
     span {
         width: 30px;
