@@ -2,31 +2,31 @@
 @import '../abstracts/mixins';
 
 // ===== Card Base Styles =====
-// ===== Card Base Styles =====
 @mixin glass-card {
     background: var(--bg-surface);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     border: 1px solid var(--border-glass);
     border-radius: $border-radius-xl;
-    box-shadow: $shadow-sm;
-    transition: $transition-base;
-    overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    position: relative;
 
     &:hover {
         transform: translateY(-5px);
-        box-shadow: $shadow-lg;
-        border-color: rgba(var(--shadow-color), 0.2);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        border-color: rgba(var(--primary-color-rgb), 0.3);
     }
 }
 
 .stat-card {
     @include glass-card;
-    padding: $spacing-lg;
+    padding: $spacing-xl $spacing-lg;
     text-align: center;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    position: relative;
 
     &::after {
         content: '';

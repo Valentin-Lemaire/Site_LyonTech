@@ -1,96 +1,97 @@
-# Site Lyon Tech
+# Lyon Tech - Site Web Officiel
 
-Site web de l'association technique Lyon Tech du campus de Lyon de l'ECE.
+Site web officiel de l'association technique du campus de Lyon de l'ECE. Vitrine des projets, de l'équipe et point de contact pour les étudiants et partenaires.
 
-## Structure du projet
+## 🌟 Fonctionnalités
 
+### Partie Publique
+- **Design Moderne & Responsive** : Glassmorphism, animations fluides, compatible mobile/tablette/desktop (Menu burger robuste).
+- **Mode Sombre (Dark Mode)** : Thème persistant (via URL et LocalStorage) même en navigation locale.
+- **Pages** : Accueil, Projets, Équipe, Nous Rejoindre, Contact.
+- **Formulaire de Contact** : Envoi de messages directement relié à Firestore.
+
+### Panel Administrateur (`/admin`)
+- **Tableau de Bord Sécurisé** : Authentification via Firebase Auth.
+- **Gestion des Messages** :
+  - Liste des messages reçus.
+  - Statut Lu/Non lu avec indicateur visuel (Gras + Badge "Nouveau").
+  - Traçabilité : "Lu par [Nom]" avec horodatage.
+  - Badge de notification (compteur) dans la sidebar.
+- **Gestion de contenu (CMS)** :
+  - Ajouter/Modifier/Supprimer des **Projets**.
+  - Ajouter/Modifier/Supprimer des membres de l'**Équipe**.
+- **Interface Super Responsive** : Sidebar rétractable sur mobile, tableaux défilants, formulaires adaptés.
+
+## 🛠 Technologies
+
+- **Frontend** : HTML5, SCSS (Sass), Vanilla JavaScript.
+- **Backend (Serverless)** : Firebase (Google).
+  - **Authentication** : Gestion des accès admin.
+  - **Firestore** : Base de données NoSQL (Projets, Équipe, Messages).
+  - **Hosting** : Hébergement statique performant.
+- **Outils** : NPM, Sass Compass/Watcher.
+
+## 📂 Structure du Projet
+
+```bash
+├── admin/              # Panel Administrateur (Protégé)
+│   ├── index.html      # Dashboard Admin (SPA : Messages, Projets, Team)
+│   └── login.html      # Page de connexion Admin
+├── style/              # Sources SCSS (Architecture 7-1)
+│   ├── main.scss       # Point d'entrée
+│   ├── abstracts/      # Variables, Mixins
+│   ├── layout/         # Header, Footer
+│   ├── utilities/      # Responsive, Helpers
+│   └── ...
+├── pages/              # Pages publiques (Projets, Équipe...)
+├── index.html          # Page d'accueil
+├── main.js             # Logique JS globale (Menu, Thème...)
+├── main.css            # CSS compilé (ne pas modifier directement)
+├── firebase.json       # Config déploiement Firebase
+├── firestore.rules     # Règles de sécurité Firestore
+└── package.json        # Dépendances NPM
 ```
-├── index.html          # Page d'accueil (à la racine)
-├── main.css            # CSS compilé (généré automatiquement)
-├── main.js             # JavaScript
-├── pages/              # Pages internes
-│   ├── projets.html    # Page des projets
-│   ├── equipe.html     # Page de l'équipe
-│   ├── rejoindre.html  # Page "Nous rejoindre"
-│   └── contact.html    # Page de contact
-├── partials/           # Partials de référence (pour copier-coller)
-│   ├── header.html     # Header commun (version de référence)
-│   └── footer.html     # Footer commun (version de référence)
-├── style/              # Fichiers SCSS sources
-│   ├── main.scss       # Fichier principal SCSS
-│   ├── abstracts/      # Variables, mixins, functions
-│   ├── base/           # Reset, typography
-│   ├── components/     # Boutons, cartes, formulaires
-│   ├── layout/         # Header, footer
-│   ├── pages/          # Styles spécifiques aux pages
-│   └── utilities/      # Responsive, etc.
-└── package.json        # Dépendances npm
-```
 
-## Développement
+## 🚀 Installation & Développement
 
-### Installation des dépendances
+### Pré-requis
+- Node.js & NPM installés.
+- Firebase CLI (`npm install -g firebase-tools`).
 
+### 1. Installation
 ```bash
 npm install
 ```
 
-### Compilation du SCSS
-
-Pour compiler le SCSS en CSS une fois :
-
-```bash
-npm run build:css
-```
-
-Pour compiler automatiquement à chaque modification :
+### 2. Développement Local (CSS)
+Le site est statique, vous pouvez ouvrir `index.html` directement dans le navigateur.
+Pour travailler sur le design, lancez la compilation SCSS en mode "watch" :
 
 ```bash
 npm run watch:css
 ```
 
-## Structure SCSS
+### 3. Déploiement
+Le site est hébergé sur Firebase Hosting.
 
-Le projet utilise une architecture SCSS modulaire organisée selon le pattern 7-1 :
+1. Se connecter à Firebase :
+   ```bash
+   firebase login
+   ```
 
-- **abstracts/** : Variables, mixins et fonctions réutilisables
-- **base/** : Styles de base (reset, typographie)
-- **components/** : Composants réutilisables (boutons, cartes, formulaires)
-- **layout/** : Structure de la page (header, footer)
-- **pages/** : Styles spécifiques à chaque page
-- **utilities/** : Utilitaires (responsive, helpers)
+2. Déployer (Site + Règles de sécurité) :
+   ```bash
+   firebase deploy
+   ```
 
-## Modification des styles
+## 🔐 Sécurité & Admin
 
-Pour modifier les styles :
+- L'accès au dossier `/admin` est protégé par un script de redirection JS vérifiant l'état d'authentification Firebase.
+- **Firestore Rules** :
+  - **Lecture Publique** : Projets, Équipe.
+  - **Écriture Publique** : Création de messages (Contact).
+  - **Admin Uniquement** : Lecture des messages, Modification Projets/Équipe.
+- **Utilisateurs Admin** : Gérés via la console Firebase Authentication.
 
-1. Édite les fichiers SCSS dans le dossier `style/`
-2. Compile avec `npm run build:css` ou utilise `npm run watch:css` pour la compilation automatique
-3. Le fichier `main.css` sera régénéré automatiquement
-
-## Structure HTML
-
-Le projet utilise une organisation simple des fichiers HTML :
-
-- **`index.html`** : Page d'accueil à la racine (servie directement)
-- **`pages/`** : Toutes les autres pages HTML sont dans ce dossier
-- **`partials/`** : Fichiers de référence pour le header et footer communs
-  - Ces fichiers servent de **source unique** pour copier-coller les modifications
-  - Comme on reste en HTML statique, ils ne sont pas inclus automatiquement
-  - Quand tu modifies le header/footer, copie-le depuis `partials/` vers toutes les pages
-
-### Chemins relatifs
-
-- Depuis `index.html` : les liens vers les pages utilisent `pages/nom-page.html`
-- Depuis `pages/*.html` : 
-  - Les liens vers l'accueil utilisent `../index.html`
-  - Les liens vers les autres pages utilisent `nom-page.html` (même dossier)
-  - Les ressources (`main.css`, `main.js`) utilisent `../main.css` et `../main.js`
-
-## Notes
-
-- Les fichiers HTML pointent vers `main.css` (le fichier compilé)
-- Ne modifie pas directement `main.css`, il sera écrasé lors de la compilation
-- Modifie uniquement les fichiers `.scss` dans le dossier `style/`
-- Pour modifier le header/footer, édite d'abord les fichiers dans `partials/`, puis copie-les dans toutes les pages HTML
-
+---
+*Dernière mise à jour : Décembre 2025*

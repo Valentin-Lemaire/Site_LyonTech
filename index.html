@@ -93,11 +93,11 @@
             <h2 class="section-title">Nos points forts</h2>
             <div class="stats-grid">
                 <div class="stat-card">
-                    <div class="stat-number">20+</div>
+                    <div class="stat-number" id="count-members">20+</div>
                     <div class="stat-label">Membres actifs</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number">4+</div>
+                    <div class="stat-number" id="count-projects">4+</div>
                     <div class="stat-label">Projets en cours</div>
                 </div>
                 <div class="stat-card">
@@ -136,6 +136,39 @@
         </div>
     </footer>
 
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyBRnfU9g641yhKsjGXxbV_KbzRN3whfa1M",
+            authDomain: "site-lyon-tech.firebaseapp.com",
+            projectId: "site-lyon-tech",
+            storageBucket: "site-lyon-tech.firebasestorage.app",
+            messagingSenderId: "382756341988",
+            appId: "1:382756341988:web:189cf01cb7819764a1c4f1",
+            measurementId: "G-HHNHXMTZ75"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // Dynamic Counters
+        document.addEventListener('DOMContentLoaded', () => {
+            // Count Projects
+            db.collection("projects").get().then(snap => {
+                const count = snap.size;
+                const el = document.getElementById('count-projects');
+                if (el) el.textContent = count > 0 ? count : "4+"; // Fallback ou valeur réelle
+            }).catch(e => console.log("Stats error:", e));
+
+            // Count Members
+            db.collection("team").get().then(snap => {
+                const count = snap.size;
+                const el = document.getElementById('count-members');
+                if (el) el.textContent = count > 0 ? count : "20+";
+            }).catch(e => console.log("Stats error:", e));
+        });
+    </script>
     <script src="main.js"></script>
 </body>
 
